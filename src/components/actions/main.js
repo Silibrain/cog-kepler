@@ -18,53 +18,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+export function startLoading() {
+  return { type: START_LOADING };
+}
 
-const Wrapper = styled.div`
-  display: inline-block;
-  color: ${props => props.theme.textColorLT};
-  font-size: 12px;
-  text-decoration: underline;
+export function stopLoading() {
+  return { type: STOP_LOADING };
+}
 
-  :hover {
-    cursor: pointer;
-    font-weight: 500;
-  }
-`;
-/*
-Inspired by https://github.com/okonet/react-dropzone/blob/master/src/index.js
-*/
-export default class UploadButton extends Component {
-  static propTypes = {
-    onUpload: PropTypes.func.isRequired
-  };
+export function tileStartLoading() {
+  return { type: TILE_START_LOADING };
+}
 
-  _onClick = () => {
-    this._fileInput.value = null;
-    this._fileInput.click();
-  };
+export function tileStopLoading() {
+  return { type: TILE_STOP_LOADING };
+}
 
-  _onChange = ({target: {files}}) => {
-    if (!files) {
-      return;
-    }
-
-    this.props.onUpload(files);
-  };
-
-  render() {
-    return (
-      <Wrapper>
-        <input
-          type="file"
-          ref={ref => {this._fileInput = ref}}
-          style={{display: 'none'}}
-          onChange={this._onChange}
-        />
-        <span onClick={this._onClick}>{this.props.children}</span>
-      </Wrapper>
-    );
-  }
-};
+export function setPosition(longitude, latitude, zoom) {
+  return { type: SET_POSITION, longitude, latitude, zoom };
+}

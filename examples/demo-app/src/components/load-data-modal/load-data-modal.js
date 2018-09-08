@@ -39,7 +39,7 @@ const propTypes = {
 
   // call backs
   onFileUpload: PropTypes.func.isRequired,
-  onBrowse: PropTypes.func.isRequired,
+  onBrowse: PropTypes.func,
   onLoadSampleData: PropTypes.func.isRequired,
   onSetLoadingMethod: PropTypes.func.isRequired
 };
@@ -156,7 +156,7 @@ class LoadDataModal extends Component {
                   <FileUpload onFileUpload={this.props.onFileUpload} />
                 ) : null}
                 {loadingMethod.id === 'cog-exp' ? (
-                  <Browse onBrowse={this.props.onBrowse} />
+                  <div onBrowse={this.props.onBrowse} />
                 ) : null}
                 {loadingMethod.id === 'sample' ? (
                   <SampleMapGallery
