@@ -1,3 +1,6 @@
 [submodule "cog-explorer"]
 	path = cog-explorer
 	url = https://github.com/b0bbybaldi/cog-explorer
+[submodule "vendor/plugins/demo"]
+	path = vendor/plugins/demo
+	url = https://github.com/b0bbybaldi/cog-explorer
