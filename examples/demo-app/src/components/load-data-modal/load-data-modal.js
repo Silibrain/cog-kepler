@@ -31,8 +31,6 @@ import {LOADING_METHODS, QUERY_TYPES, ASSETS_URL} from '../../constants/default-
 
 import SampleMapGallery from './sample-data-viewer';
 
-import AddSceneForm from '../scenes/add';
-
 const propTypes = {
   // query options
   loadingMethod: PropTypes.object.isRequired,
@@ -41,7 +39,6 @@ const propTypes = {
 
   // call backs
   onFileUpload: PropTypes.func.isRequired,
-  onBrowse: PropTypes.func,
   onLoadSampleData: PropTypes.func.isRequired,
   onSetLoadingMethod: PropTypes.func.isRequired
 };
@@ -148,7 +145,6 @@ class LoadDataModal extends Component {
             </StyledSpinner>
             ) : (
               <div>
-              
                 {loadingMethod.id !== 'sample' ? (
                   <Tabs
                     method={loadingMethod.id}
@@ -157,11 +153,6 @@ class LoadDataModal extends Component {
                 ) : null}
                 {loadingMethod.id === 'upload' ? (
                   <FileUpload onFileUpload={this.props.onFileUpload} />
-                ) : null}
-                {loadingMethod.id === 'cog-exp' ? (
-                  <div>
-                  <AddSceneForm/>
-                  </div>
                 ) : null}
                 {loadingMethod.id === 'sample' ? (
                   <SampleMapGallery

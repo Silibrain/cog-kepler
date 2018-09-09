@@ -32,8 +32,7 @@ const propTypes = {
   onClose: PropTypes.func.isRequired,
 
   // call backs
-  onFileUpload: PropTypes.func.isRequired,
-  onBrowse: PropTypes.func.isRequired
+  onFileUpload: PropTypes.func.isRequired
 };
 
 export const LoadDataModal = props => (

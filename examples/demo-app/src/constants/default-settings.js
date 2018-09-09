@@ -61,21 +61,12 @@ export const LOADING_METHODS = [
     ]
   },
   {
-    //Constant for Cog Explorer URL FETCH TIFF to then use with Mapbox
-    id: 'cog-exp',
-    label: 'Enter HTTP Request',
-    icon: 'note',
-    description:
-      'Utilize COG-Explorer Functionality within Kepler.'
-  },
-  {
     id: 'sample',
     label: 'Sample Data',
     options: [
       // Dynamically populated
     ]
   }
-  
 ];
 
 export const DEFAULT_LOADING_METHOD = LOADING_METHODS[0];

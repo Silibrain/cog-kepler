@@ -98,7 +98,7 @@ class App extends Component {
   };
 
   _showBanner = () => {
-    this.setState({showBanner: false});
+    this.setState({showBanner: true});
   };
 
   _hideBanner = () => {
