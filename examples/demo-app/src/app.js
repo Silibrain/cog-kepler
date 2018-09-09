@@ -24,6 +24,7 @@ import window from 'global/window';
 import {connect} from 'react-redux';
 import Banner from './components/banner';
 import Announcement from './components/announcement';
+import Explorer from '../../../plugin/cog-explorer/app/src/app';
 
 import {loadSampleConfigurations} from './actions';
 import {replaceLoadDataModal} from './factories/load-data-modal';
@@ -205,6 +206,7 @@ class App extends Component {
             marginTop: showBanner ? `${bannerHeight}px` : 0
           }}
         >
+        <Explorer/>
           <KeplerGl
             mapboxApiAccessToken={MAPBOX_TOKEN}
             id="map"
