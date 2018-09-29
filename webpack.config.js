@@ -18,112 +18,69 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+// NOTE: To use this example standalone (e.g. outside of deck.gl repo)
+// delete the local development overrides at the bottom of this file
+
+// avoid destructuring for older Node version support
 const resolve = require('path').resolve;
+const join = require('path').join;
 const webpack = require('webpack');
 
-const SRC_DIR = resolve('./src');
-const LIBRARY_BUNDLE_CONFIG = env => ({
-  // Bundle the source code
+const CONFIG = {
+  // bundle app.js and everything it imports, recursively.
   entry: {
-    lib: SRC_DIR + '/index.js'
+    app: resolve('./src/main.js')
   },
 
-  // Silence warnings about big bundles
-  stats: {
-    warnings: false
-  },
-
-  output: {
-    // Generate the bundle in dist folder
-    path: resolve('./dist'),
-    filename: 'index.js',
-    library: 'kepler.gl'
-    // libraryTarget: 'umd'
-  },
-
-  // Exclude any non-relative imports from resulting bundle
-  externals: [
-    /^[a-z\.\-0-9]+$/
-  ],
-
-  module: {
-    rules: [{
-      test: /\.js$/,
-      loader: 'babel-loader',
-      include: [SRC_DIR]
-    }, {
-      test: /\.json$/,
-      loader: 'json-loader'
-    }, {
-      test: /\.scss$/,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
-      include: [SRC_DIR]
-    }]
-  },
-
-  node: {
-    fs: 'empty'
-  },
-
-  plugins: [
-    // leave minification to app
-    // new webpack.optimize.UglifyJsPlugin({comments: false}),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(env),
-        BROWSER: JSON.stringify(true),
-      }
-    })
-  ]
-});
-
-const TEST_BROWSER_CONFIG = {
-  devServer: {
-    stats: {
-      warnings: false
-    },
-    quiet: true
-  },
-
-  // Bundle the tests for running in the browser
-  entry: {
-    'test-browser': resolve('./test/browser.js')
-  },
-
-  // Generate a bundle in dist folder
-  output: {
-    path: resolve('./dist'),
-    filename: '[name]-bundle.js'
-  },
-
-  devtool: '#inline-source-maps',
+  devtool: 'source-map',
 
   resolve: {
-    alias: {
-      'kepler.gl/test': resolve('./test'),
-      'kepler.gl': resolve('./src')
-    }
+    // Make src files outside of this dir resolve modules in our node_modules folder
+    modules: [resolve(__dirname, '.'), resolve(__dirname, 'node_modules'), 'node_modules']
   },
 
   module: {
-    rules: []
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: join(__dirname, 'src'),
+        exclude: [/node_modules/]
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader'
+      },
+      {
+        // The example has some JSON data
+        test: /\.json$/,
+        loader: 'json-loader',
+        exclude: [/node_modules/]
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
   },
 
   node: {
     fs: 'empty'
   },
 
-  plugins: []
+  // Optional: Enables reading mapbox token from environment variable
+  plugins: [
+    new webpack.EnvironmentPlugin(['pk.eyJ1IjoidmFpYmhhdi1ndXJuYW5pIiwiYSI6ImNqbWcwMHg1aDBhZXkza3BmdHh4dDNjN3oifQ.Hx3pd97ctvbEAlqOXpCydQ'])
+  ]
 };
 
-
+// This line enables bundling against src in this repo rather than installed deck.gl module
 module.exports = env => {
-  env = env || {};
-  if (env.test) {
-    return TEST_BROWSER_CONFIG;
-  }
-
-  console.log(
-    JSON.stringify(LIBRARY_BUNDLE_CONFIG(env), null, 2));
-  return LIBRARY_BUNDLE_CONFIG(env);
+  return env ? require('../webpack.config.local')(CONFIG, __dirname)(env) : CONFIG;
 };
